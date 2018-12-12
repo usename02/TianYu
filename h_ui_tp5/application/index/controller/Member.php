@@ -26,10 +26,10 @@ class Member extends Base
         );
 //        获取分页的数据
 $list = MemberModel::paginate($listRows = 3, $simple = false,['type'=>'Bootstrap6']);
-var_dump($result);
+//var_dump($result);
             //分页显示输出
         $page=$list->render();
-var_dump($page);/*取不到样式*/
+//var_dump($page);/*取不到样式*/
         $count = Db::name('member')->count();
 //        遍历member表
         foreach ($result as $value){
@@ -72,13 +72,11 @@ var_dump($page);/*取不到样式*/
     {
 //去处要编辑的数据的id
         $member_id = $request -> param('');
+//数组中取id
+        $id = $member_id['ID'];
 
-//        var_dump($Shop_id);
-        //根据ID进行查询(通过模型方法)
-        //**模型方法取不到 一直是空值 所以直接调用数据库Db的方法*
-        $result = MemberModel::get($member_id);
-//        $result =  Db::table('member')->where('id',1)->find();
-//      var_dump($result);
+//        var_dump($member_id);
+        $result =  Db::table('member')->where('ID',$id)->find();
         //tp5中通过模型select返回的是对象 通过db select返回的是数组
         //设置当前页面的seo模板变量
         $this->view->assign('title','编辑会员信息');
@@ -90,8 +88,9 @@ var_dump($page);/*取不到样式*/
     public function setStatus(Request $request)
     {
         $member_id = $request -> param('ID');
+        $id = $member_id['ID'];
 //        $result = ShopModel::get($shop_id);
-        $result = Db::table('shop')->where('ID',1)->find();
+        $result = Db::table('member')->where('ID',$id)->find();
         if($result->getData('STATUS') == 1) {
             MemberModel::update(['STATUS'=>0],['ID'=>$member_id]);
         } else {
@@ -109,10 +108,12 @@ var_dump($page);/*取不到样式*/
                 $data[$key] = $value;
             }
         }
+
         //设置更新条件
-        $condition = ['name'=>$data['NAME']];
+        $condition = ['CODE'=>$data['CODE']];
         //更新当前记录
         $result = MemberModel::update($data,$condition);
+
         //设置返回数据
         $status = 0;
         $message = '更新失败,请检查';

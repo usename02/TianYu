@@ -90,7 +90,6 @@ class User extends  Base
  //admin用户可以查看所有记录,数据要经过模型获取器处理
             //分页显示输出
             $page=$list->render();
-            var_dump($page);
 //           总页数
             $total = $list->total();
 
@@ -150,16 +149,18 @@ class User extends  Base
                 $data[$key] = $value;
             }
         }
+
         $condition = ['name'=>$data['name']] ;
         $result = UserModel::update($data, $condition);
         //如果是admin用户,更新当前session中用户信息user_info中的角色role,供页面调用
         if (Session::get('user_info.name') == 'admin') {
             Session::set('user_info.role', $data['role']);
         }
+        //设置返回数据
+        $status = 0;
+        $message = '更新失败,请检查';
         if (true == $result) {
             return ['status'=>1, 'message'=>'更新成功'];
-        } else {
-            return ['status'=>0, 'message'=>'更新失败,请检查'];
         }
     }
 
