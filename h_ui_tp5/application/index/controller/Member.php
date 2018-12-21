@@ -67,6 +67,36 @@ $list = MemberModel::paginate($listRows = 3, $simple = false,['type'=>'Bootstrap
 //        dump($result);
         return $this -> view -> fetch('member/member-list');
     }
+     public function memberList1()
+    {
+
+//        HANDSET=&ROLE=&NAME=array(4) { ["login_name"]=> string(0) "" ["login_user"]=> string(0) "" ["login_role"]=> string(0) "" ["papernum"]=> string(1) "3" }
+
+        //传值 登录人员 handset role
+
+        header("Content-type: text/html; charset=UTF8");
+        $url = "https://wx.3space.me/ty/admin_vipviewall.php";
+
+//传值 登录人员 handset role
+        $post = 'HANDSET=' . '&ROLE=' . '&NAME=' . '1';
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        $vip = json_decode($data, true);
+        $vipdata = $vip['vipdata'];
+        $allRowCount = (int)$vip['allRowCount'];
+        var_dump($vip);
+        var_dump($vipdata);
+        var_dump($vip['allRowCount']);
+        var_dump($allRowCount);
+
+    }
     //渲染商铺编辑界面
     public function memberEdit(Request $request)
     {
