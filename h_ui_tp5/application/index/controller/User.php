@@ -23,6 +23,7 @@ class User extends  Base
         $status = 0;//检验登录状态 判断标志
         $result = '验证失败'; //失败提示信息
         $data = $request->param();
+
         //验证规则
         $rule = [
             'name|姓名' => 'require',
@@ -30,6 +31,7 @@ class User extends  Base
         ];
 
         $result = $this->validate($data, $rule);
+        var_dump($result===true);
         if ($result===true) {
             //查询条件
             $map = [
@@ -38,7 +40,6 @@ class User extends  Base
             ];
             //数据表查询,返回模型对象
             $user = UserModel::get($map);
-
             if ( $user===null ) {
                 $result = '没有该用户，请检查';
                 $status = 1;
@@ -48,12 +49,10 @@ class User extends  Base
                 //创建2个session,用来检测用户登陆状态和防止重复登陆
                 Session::set('user_id', $user->id);
                 Session::set('user_info', $user->getData());
-;
+
                 //更新用户登录次数:自增1
                 $user->setInc('login_count');
             }
-
-
         }
         return ['status' => $status, 'message' => $result, 'data' => $data];
     }
