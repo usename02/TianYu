@@ -5,7 +5,7 @@ namespace app\index\controller;
 use think\paginator\driver\Bootstrap3;
 use think\Request;
 use app\index\model\User as UserModel;
-use traits\model\SoftDelete;
+
 use think\session;
 use think\Db;
 class User extends  Base
@@ -260,7 +260,7 @@ class User extends  Base
     public  function  aaa($searchKeyword)
     {
         $db=connectDb();
-        $result=$db->prepare("select 字段名 from 数据库名字 where 字段名 like ?");
+        $result=$db->prepare("select tp5.user.name from tp5 where tp5.user.name like ?");
         $result->bindParam(1,$keyword);//第一个问号的值
 //        $result=>execute;
 
@@ -269,27 +269,8 @@ $keyword=$_GET['keyword'];//获取输入框的内容
 
 $suggestion=test($keyword);
 
-echo json_encode($suggestion);//输出查询的结果（json格式输出）
+$this->assign($searchKeyword);//输出查询的结果（）
+
     }
-//
-//                            _ooOoo_
-//                           o8888888o
-//                           88" . "88
-//                           (| -_- |)
-//                           O\  =  /O
-//                        ____/`---'\____
-//                      .'  \\|     |//  `.
-//                     /  \\|||  :  |||//  \
-//                    /  _||||| -:- |||||-  \
-//                    |   | \\\  -  /// |   |
-//                    | \_|  ''\---/''  |   |
-//                    \  .-\__  `-`  ___/-. /
-//                  ___`. .'  /--.--\  `. . __
-//               ."" '<  `.___\_<|>_/___.'  >'"".
-//              | | :  `- \`.;`\ _ /`;.`/ - ` : | |
-//              \  \ `-.   \_ __\ /__ _/   .-` /  /
-//         ======`-.____`-.___\_____/___.-`____.-'======
-//                            `=---='
-//        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-//                      Buddha Bless, No Bug !
+
 }
